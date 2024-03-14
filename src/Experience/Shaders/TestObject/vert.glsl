@@ -32,12 +32,12 @@ vec3 distort(vec3 p){
 
 void main(){
     vec3 p=position;
-    p=distort(p);
-    gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);
+    vec3 dp=distort(p);
+    gl_Position=projectionMatrix*modelViewMatrix*vec4(dp,1.);
     
     vUv=uv;
     // vNormal=(modelMatrix*vec4(normal,0.)).xyz;
-    vec3 fNormal=fixNormal(p,normal,RADIUS/SEGMENTS);
+    vec3 fNormal=fixNormal(p,dp,normal,RADIUS/SEGMENTS);
     vNormal=(modelMatrix*vec4(fNormal,0.)).xyz;
-    vWorldPosition=vec3(modelMatrix*vec4(p,1));
+    vWorldPosition=vec3(modelMatrix*vec4(dp,1));
 }
