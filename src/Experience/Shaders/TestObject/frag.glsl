@@ -21,6 +21,9 @@ uniform float uLight2Intensity;
 
 void main(){
     vec2 uv=vUv;
+    
+    vec3 normal=normalize(vNormal);
+    
     vec3 col=vec3(1.);
     
     // cos palette
@@ -31,18 +34,18 @@ void main(){
     
     // fresnel
     vec3 viewDir=normalize(cameraPosition-vWorldPosition);
-    vec3 fres=fresnel(vec3(0.),vNormal,viewDir);
+    vec3 fres=fresnel(vec3(0.),normal,viewDir);
     col+=fres*uFresnelIntensity;
     
     // diffuse
     // vec3 lightColor=vec3(1.,0.,0.);
     vec3 lightPos=vec3(10.,5.,10.);
-    float diff=max(dot(vNormal,normalize(lightPos-vWorldPosition)),0.);
+    float diff=max(dot(normal,normalize(lightPos-vWorldPosition)),0.);
     // col+=lightColor*diff;
     col=mix(col,uLightColor,diff*fres*uLightIntensity);
     
     vec3 light2Pos=vec3(-10.,-5.,10.);
-    float diff2=max(dot(vNormal,normalize(light2Pos-vWorldPosition)),0.);
+    float diff2=max(dot(normal,normalize(light2Pos-vWorldPosition)),0.);
     col=mix(col,uLight2Color,diff2*fres*uLight2Intensity);
     
     // gamma
